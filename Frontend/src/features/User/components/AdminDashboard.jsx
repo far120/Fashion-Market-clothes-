@@ -1,135 +1,228 @@
 import { Link } from "react-router-dom";
-import { FiArrowRight, FiBarChart2, FiClock, FiPackage, FiShield, FiUsers } from "react-icons/fi";
-import Error from "../../../components/ui/Erorr";
-import Spinner from "../../../components/ui/Spinner";
+import { FiArrowRight, FiBarChart2, FiClock, FiPackage, FiShield, FiUsers, FiGrid, FiTag, FiShoppingBag, FiSliders } from "react-icons/fi";
 import { useAuth } from "../../auth/hooks/useAuth";
 
 export default function AdminDashboard() {
   const { isAdmin, isManager } = useAuth();
+
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,#111827_0%,#1f2937_42%,#334155_100%)] px-4 py-10 sm:py-16">
-      <section className="mx-auto w-full max-w-7xl rounded-4xl border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.95)_0%,rgba(250,250,255,0.88)_54%,rgba(236,248,255,0.9)_100%)] p-6 shadow-[0_30px_90px_rgba(15,23,42,0.42)] backdrop-blur sm:p-10">
-        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <article className="rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
-            <p className="inline-flex rounded-full border border-slate-200 bg-slate-950 px-4 py-1 text-xs font-bold uppercase tracking-[0.22em] text-white">
-              Admin Hub
-            </p>
-            <h1 className="mt-4 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
-              Choose the right dashboard.
+    <div className="min-h-screen bg-stone-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 px-4 py-10 sm:px-6 lg:px-8 font-sans">
+      <div className="mx-auto max-w-7xl space-y-8">
+        
+        {/* Top Header Card */}
+        <div className="rounded-3xl bg-slate-900 text-white p-8 sm:p-12 shadow-2xl border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold uppercase tracking-widest border border-amber-500/30">
+              ATELIER CONTROL HUB
+            </span>
+            <h1 className="text-3xl sm:text-5xl font-serif font-normal">
+              Fashion Management Portal
             </h1>
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
-              Split the administration experience into two clear operating rooms: commerce for products and orders,
-              and people for users and activity logs.
+            <p className="text-sm text-slate-300 max-w-xl font-light">
+              Direct access to inventory products, brand categories, order status tracking, user permissions, and system logs.
             </p>
+          </div>
 
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              {isAdmin && (
-              <Link
-                to="/admin/dashboard/products"
-                className="group rounded-2xl bg-[linear-gradient(90deg,#0f172a_0%,#1e293b_100%)] px-5 py-4 text-white shadow-[0_14px_32px_rgba(15,23,42,0.25)] transition hover:-translate-y-0.5"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-200">Commerce</p>
-                    <h2 className="mt-1 text-lg font-black">Products and orders</h2>
-                  </div>
-                  <FiPackage className="text-2xl text-sky-200 transition group-hover:translate-x-1" />
-                </div>
-              </Link>
-              )}
-
-               { isManager && (
-              <Link
-                to="/admin/dashboard/users"
-                className="group rounded-2xl bg-[linear-gradient(90deg,#1e293b_0%,#334155_100%)] px-5 py-4 text-white shadow-[0_14px_32px_rgba(15,23,42,0.22)] transition hover:-translate-y-0.5"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-200">People</p>
-                    <h2 className="mt-1 text-lg font-black">Users and logs</h2>
-                  </div>
-                  <FiUsers className="text-2xl text-emerald-200 transition group-hover:translate-x-1" />
-                </div>
-              </Link>
-               )}
+          <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 flex items-center gap-3 shrink-0">
+            <div className="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xl">
+              <FiSliders />
             </div>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Navigation</p>
-                <p className="mt-2 text-sm font-semibold text-slate-950">Two focused dashboards</p>
-              </div>
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Design</p>
-                <p className="mt-2 text-sm font-semibold text-slate-950">Premium global look</p>
-              </div>
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Flow</p>
-                <p className="mt-2 text-sm font-semibold text-slate-950">Less clutter, more clarity</p>
-              </div>
+            <div>
+              <div className="text-xs text-slate-400">System Mode</div>
+              <div className="text-sm font-serif font-bold text-white uppercase">{isAdmin ? "Admin Controls" : "Manager Logs"}</div>
             </div>
-          </article>
+          </div>
+        </div>
 
-          <article className="rounded-3xl border border-slate-200 bg-slate-950 p-6 text-white shadow-[0_18px_50px_rgba(15,23,42,0.18)]">
-            <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs font-bold uppercase tracking-[0.22em] text-sky-200">
-              Command Overview
-            </p>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
-               {isAdmin && (
-                <>
+        {/* Action Grid */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          
+          {isAdmin && (
+            <>
+              {/* Products Management */}
               <Link
                 to="/admin/products"
-                className="rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
+                className="group p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col justify-between space-y-6 hover:-translate-y-1"
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">Manage</p>
-                <h3 className="mt-2 text-lg font-black">Products</h3>
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    <FiPackage />
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    INVENTORY
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-serif font-bold text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors">
+                    Garments & Products
+                  </h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-light">
+                    Add new apparel, manage pricing, update stock numbers, and upload catalog photos.
+                  </p>
+                </div>
+
+                <div className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-wider pt-2 group-hover:translate-x-1 transition-transform">
+                  <span>Manage Products</span>
+                  <FiArrowRight />
+                </div>
               </Link>
+
+              {/* Categories Management */}
+              <Link
+                to="/admin/categories"
+                className="group p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col justify-between space-y-6 hover:-translate-y-1"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    <FiGrid />
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    TAXONOMY
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-serif font-bold text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors">
+                    Apparel Categories
+                  </h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-light">
+                    Create and edit garment categories like Suits, Dresses, Footwear, Outerwear.
+                  </p>
+                </div>
+
+                <div className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-wider pt-2 group-hover:translate-x-1 transition-transform">
+                  <span>Manage Categories</span>
+                  <FiArrowRight />
+                </div>
+              </Link>
+
+              {/* Brands Management */}
+              <Link
+                to="/admin/brands"
+                className="group p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col justify-between space-y-6 hover:-translate-y-1"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    <FiTag />
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    PARTNERS
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-serif font-bold text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors">
+                    Designer Brands
+                  </h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-light">
+                    Manage couture fashion labels, designer bios, and brand logos.
+                  </p>
+                </div>
+
+                <div className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-wider pt-2 group-hover:translate-x-1 transition-transform">
+                  <span>Manage Brands</span>
+                  <FiArrowRight />
+                </div>
+              </Link>
+
+              {/* Orders Matrix */}
               <Link
                 to="/admin/orders"
-                className="rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
+                className="group p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col justify-between space-y-6 hover:-translate-y-1"
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">Review</p>
-                <h3 className="mt-2 text-lg font-black">Orders</h3>
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    <FiShoppingBag />
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    LOGISTICS
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-serif font-bold text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors">
+                    Customer Orders
+                  </h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-light">
+                    View customer purchases, update order status to Processing or Shipped, inspect receipts.
+                  </p>
+                </div>
+
+                <div className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-wider pt-2 group-hover:translate-x-1 transition-transform">
+                  <span>Review Orders</span>
+                  <FiArrowRight />
+                </div>
               </Link>
-                </>
-               )}
-              {isManager && (
-                <>
+            </>
+          )}
+
+          {isManager && (
+            <>
+              {/* Users Control */}
               <Link
                 to="/admin/users"
-                className="rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
+                className="group p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col justify-between space-y-6 hover:-translate-y-1"
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">Manage</p>
-                <h3 className="mt-2 text-lg font-black">Users</h3>
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    <FiUsers />
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    ACCOUNTS
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-serif font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors">
+                    User Accounts & Roles
+                  </h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-light">
+                    Manage customer accounts, assign role permissions (User, Admin, Manager).
+                  </p>
+                </div>
+
+                <div className="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider pt-2 group-hover:translate-x-1 transition-transform">
+                  <span>Manage Users</span>
+                  <FiArrowRight />
+                </div>
               </Link>
+
+              {/* Activity Logs */}
               <Link
                 to="/admin/logs"
-                className="rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
+                className="group p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col justify-between space-y-6 hover:-translate-y-1"
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">Inspect</p>
-                <h3 className="mt-2 text-lg font-black">Logs</h3>
-              </Link>
-                </>
-                )}
-            </div>
-
-            <div className="mt-6 rounded-2xl border border-white/10 bg-[linear-gradient(135deg,rgba(96,165,250,0.18)_0%,rgba(14,165,233,0.08)_100%)] p-5">
-              <div className="flex items-center gap-3">
-                <FiBarChart2 className="text-2xl text-sky-300" />
-                <div>
-                  <p className="text-sm font-semibold text-sky-200">System posture</p>
-                  <p className="text-sm text-slate-300">Each dashboard now has a single purpose and a cleaner visual hierarchy.</p>
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    <FiClock />
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    AUDIT
+                  </span>
                 </div>
-              </div>
-            </div>
 
-            <div className="mt-6 flex items-center gap-3 text-sm text-slate-300">
-              <FiClock className="text-sky-300" />
-              <span>Optimized for quick admin access across desktop and mobile.</span>
-            </div>
-          </article>
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-serif font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors">
+                    System Audit Logs
+                  </h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-light">
+                    Inspect user actions, sign-in attempts, and system administrative logs.
+                  </p>
+                </div>
+
+                <div className="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-wider pt-2 group-hover:translate-x-1 transition-transform">
+                  <span>Inspect Audit Logs</span>
+                  <FiArrowRight />
+                </div>
+              </Link>
+            </>
+          )}
+
         </div>
-      </section>
+
+      </div>
     </div>
   );
 }
+

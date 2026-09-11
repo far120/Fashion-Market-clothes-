@@ -1,88 +1,182 @@
-import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
-import { FiArrowUpRight } from "react-icons/fi";
+import { FaFacebookF, FaInstagram, FaPinterestP, FaTwitter } from "react-icons/fa";
+import { FiArrowRight, FiShield, FiTruck, FiRefreshCw } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-[linear-gradient(90deg,#2f3792_0%,#1f2350_100%)] text-[#d8dbef]">
-      <div className="max-w-6xl mx-auto px-6 py-10 grid gap-8 md:grid-cols-3">
+    <footer className="bg-slate-950 text-slate-300 border-t border-slate-900 mt-auto">
+      {/* Guarantees Strip */}
+      <div className="border-b border-slate-900 bg-slate-900/50 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+          <div className="flex items-center justify-center md:justify-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl shrink-0">
+              <FiTruck />
+            </div>
+            <div>
+              <h4 className="font-semibold text-white text-sm">Complimentary Express Shipping</h4>
+              <p className="text-xs text-slate-400">On all global orders over $150</p>
+            </div>
+          </div>
+          <div className="flex items-center justify-center md:justify-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl shrink-0">
+              <FiRefreshCw />
+            </div>
+            <div>
+              <h4 className="font-semibold text-white text-sm">Hassle-Free 30-Day Returns</h4>
+              <p className="text-xs text-slate-400">Pre-paid return labels included</p>
+            </div>
+          </div>
+          <div className="flex items-center justify-center md:justify-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl shrink-0">
+              <FiShield />
+            </div>
+            <div>
+              <h4 className="font-semibold text-white text-sm">Authentic & Sustainable Fabrics</h4>
+              <p className="text-xs text-slate-400">Handcrafted by master artisans</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Footer Links */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
         
-        {/* Logo / About */}
-        <div>
-              <Link to="/">
-  <svg viewBox="0 0 680 420" width="110" height="68" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="340,38 435,90 435,194 340,246 245,194 245,90" fill="#ffffff" opacity="0.06"/>
-    <polygon points="340,50 423,98 423,186 340,234 257,186 257,98" fill="none" stroke="#ffffff" strokeWidth="2.5" opacity="0.35"/>
-    <text x="340" y="168" textAnchor="middle" fontFamily="monospace" fontSize="76" fontWeight="700" fill="#ffffff" letterSpacing="-2" opacity="0.95">MF</text>
-    <circle cx="340" cy="206" r="4" fill="#EF9F27"/>
-    <text x="340" y="278" textAnchor="middle" fontFamily="'Segoe UI', sans-serif" fontSize="21" fontWeight="500" fill="#ffffff" letterSpacing="6">MOSTAFA ELFAR</text>
-    <line x1="230" y1="293" x2="450" y2="293" stroke="#EF9F27" strokeWidth="1.5"/>
-    <text x="340" y="318" textAnchor="middle" fontFamily="'Segoe UI', sans-serif" fontSize="12.5" fontWeight="400" fill="#a0a8e8" letterSpacing="3">MERN STACK DEVELOPER</text>
-  </svg>
-</Link>
-          <p className="text-sm text-[#c4cae9]">
-            Premium restaurant ordering platform with real-time menu, reviews, and admin control.
+        {/* Brand Bio */}
+        <div className="lg:col-span-2 space-y-4">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-slate-950 font-serif font-bold text-xl shadow-lg">
+              FM
+            </div>
+            <span className="font-serif text-2xl font-bold tracking-tight text-white">
+              FASHION<span className="text-amber-500 font-normal">MARKET</span>
+            </span>
+          </Link>
+          <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
+            Curating modern elegance and timeless apparel. From luxury everyday wear to runway couture, discover effortless style crafted for distinction.
           </p>
+
+          {/* Newsletter Box */}
+          <div className="pt-2">
+            <h5 className="text-xs font-semibold uppercase tracking-wider text-slate-200 mb-2">
+              Subscribe to Private Sales & Lookbooks
+            </h5>
+            <form onSubmit={(e) => e.preventDefault()} className="flex items-center max-w-sm">
+              <input
+                type="email"
+                placeholder="Enter your email..."
+                className="w-full px-4 py-2.5 rounded-l-2xl bg-slate-900 border border-slate-800 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+              />
+              <button
+                type="submit"
+                className="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold rounded-r-2xl text-sm transition-colors flex items-center justify-center"
+              >
+                <FiArrowRight />
+              </button>
+            </form>
+          </div>
         </div>
 
-        {/* Links */}
+        {/* Collections */}
         <div>
-          <h3 className="text-white font-semibold mb-3">
-            Quick Links
-          </h3>
-          <ul className="space-y-2 text-sm">
+          <h4 className="font-serif font-semibold text-white text-base mb-4 tracking-wide">
+            Collections
+          </h4>
+          <ul className="space-y-2.5 text-sm text-slate-400">
             <li>
-              <Link to="/" className="inline-flex items-center gap-2 hover:text-white">
-                Home <FiArrowUpRight />
-              </Link>
+              <Link to="/menu" className="hover:text-amber-400 transition-colors">Women's Outerwear</Link>
             </li>
             <li>
-              <Link to="/login" className="inline-flex items-center gap-2 hover:text-white">
-                Login <FiArrowUpRight />
-              </Link>
+              <Link to="/menu" className="hover:text-amber-400 transition-colors">Men's Tailored Suits</Link>
             </li>
             <li>
-              <Link to="/menu" className="inline-flex items-center gap-2 hover:text-white">
-                Menu <FiArrowUpRight />
-              </Link>
+              <Link to="/menu" className="hover:text-amber-400 transition-colors">Silk & Evening Dresses</Link>
             </li>
             <li>
-              <Link to="/orders" className="inline-flex items-center gap-2 hover:text-white">
-                Orders <FiArrowUpRight />
-              </Link>
+              <Link to="/menu" className="hover:text-amber-400 transition-colors">Designer Footwear</Link>
             </li>
             <li>
-              <Link to="/admin/dashboard" className="inline-flex items-center gap-2 hover:text-white">
-                Admin Dashboard <FiArrowUpRight />
-              </Link>
+              <Link to="/menu" className="hover:text-amber-400 transition-colors">Luxury Accessories</Link>
             </li>
           </ul>
         </div>
 
-        {/* Social */}
+        {/* Customer Care */}
         <div>
-          <h3 className="text-white font-semibold mb-3">
-            Follow Us
-          </h3>
-          <div className="flex gap-3 text-sm">
-            <a href="#" aria-label="Facebook" className="rounded-full bg-[#2a2f68] p-2.5 text-white transition hover:bg-[#ff2f74]">
+          <h4 className="font-serif font-semibold text-white text-base mb-4 tracking-wide">
+            Customer Care
+          </h4>
+          <ul className="space-y-2.5 text-sm text-slate-400">
+            <li>
+              <Link to="/orders" className="hover:text-amber-400 transition-colors">Order Tracking</Link>
+            </li>
+            <li>
+              <Link to="/reviews" className="hover:text-amber-400 transition-colors">Verified Reviews</Link>
+            </li>
+            <li>
+              <Link to="/profile" className="hover:text-amber-400 transition-colors">My Account</Link>
+            </li>
+            <li>
+              <span className="cursor-pointer hover:text-amber-400 transition-colors">Shipping & Returns</span>
+            </li>
+            <li>
+              <span className="cursor-pointer hover:text-amber-400 transition-colors">Size Guide & Care</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Connect & Socials */}
+        <div>
+          <h4 className="font-serif font-semibold text-white text-base mb-4 tracking-wide">
+            Connect
+          </h4>
+          <p className="text-xs text-slate-400 mb-4">
+            Follow our atelier lookbooks & behind-the-scenes stories.
+          </p>
+          <div className="flex gap-2.5">
+            <a
+              href="#"
+              aria-label="Instagram"
+              className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-amber-600 hover:border-amber-600 flex items-center justify-center transition-all"
+            >
+              <FaInstagram />
+            </a>
+            <a
+              href="#"
+              aria-label="Pinterest"
+              className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-amber-600 hover:border-amber-600 flex items-center justify-center transition-all"
+            >
+              <FaPinterestP />
+            </a>
+            <a
+              href="#"
+              aria-label="Facebook"
+              className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-amber-600 hover:border-amber-600 flex items-center justify-center transition-all"
+            >
               <FaFacebookF />
             </a>
-            <a href="#" aria-label="Twitter" className="rounded-full bg-[#2a2f68] p-2.5 text-white transition hover:bg-[#ff2f74]">
+            <a
+              href="#"
+              aria-label="Twitter"
+              className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-amber-600 hover:border-amber-600 flex items-center justify-center transition-all"
+            >
               <FaTwitter />
-            </a>
-            <a href="#" aria-label="LinkedIn" className="rounded-full bg-[#2a2f68] p-2.5 text-white transition hover:bg-[#ff2f74]">
-              <FaLinkedinIn />
             </a>
           </div>
         </div>
 
       </div>
 
-      {/* Bottom */}
-      <div className="border-t border-[#3f478f] text-center text-sm py-4 text-[#c4cae9]">
-        © {new Date().getFullYear()} TasteCraft. All rights reserved.
+      {/* Copyright Bar */}
+      <div className="border-t border-slate-900 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <p>© {new Date().getFullYear()} FASHION MARKET ATELIER. All Rights Reserved.</p>
+          <div className="flex items-center gap-6">
+            <span className="hover:text-slate-300 cursor-pointer">Privacy Policy</span>
+            <span className="hover:text-slate-300 cursor-pointer">Terms of Service</span>
+            <span className="hover:text-slate-300 cursor-pointer">Cookie Preferences</span>
+          </div>
+        </div>
       </div>
     </footer>
   );
-}
+}

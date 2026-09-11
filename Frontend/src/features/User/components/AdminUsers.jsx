@@ -166,165 +166,161 @@ export default function AdminUsers() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,#353d9a_0%,#2b307b_48%,#8453ad_100%)] px-4 py-10 sm:py-16">
-      <section className="mx-auto w-full max-w-6xl rounded-3xl bg-[#f7f7fb] p-6 shadow-[0_24px_70px_rgba(19,23,79,0.38)] sm:p-10">
-        <div className="mb-8 rounded-full bg-[#dbdbe3] p-1.5 sm:w-fit">
-          <div className="rounded-full bg-[linear-gradient(90deg,#ff6a8d_0%,#ff2f74_100%)] px-8 py-3 text-center text-base font-bold text-white shadow-[0_8px_24px_rgba(255,68,135,0.45)]">
-            Admin Users Management
-          </div>
+    <div className="min-h-screen bg-[#090D16] px-4 py-10 text-[#FAF9F6] sm:px-6 sm:py-16">
+      <section className="mx-auto w-full max-w-6xl rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl sm:p-10">
+        <div className="mb-8 flex flex-col gap-3">
+          <span className="inline-flex w-fit rounded-full border border-[#D4AF37]/40 bg-[#D4AF37]/10 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-[#D4AF37]">
+            Account Governance
+          </span>
+          <h1 className="font-serif text-3xl font-normal tracking-wide text-white sm:text-4xl">
+            User Accounts & Roles
+          </h1>
+          <p className="text-sm text-slate-400">
+            Manage VIP member access, grant administrator privileges, and toggle account activation statuses.
+          </p>
         </div>
 
-        <h1 className="mb-6 text-3xl font-extrabold tracking-wide text-[#171b3d] sm:text-4xl">
-          Users
-        </h1>
-
-        {/* <section className="bg-white rounded-2xl shadow-lg ring-1 ring-slate-200 overflow-hidden"> */}
-          {/* 🔍 Search Bar */}
-          <div className="mb-6 rounded-2xl border border-slate-200 bg-gradient-to-r from-slate-50 to-blue-50 p-6">
-            <form onSubmit={handleApplyFilter} className="flex flex-col gap-4 lg:flex-row lg:items-end">
-              <div className="grid flex-1 grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
-                <div className="flex flex-col gap-1">
-                  <label className="mb-1 block text-sm font-semibold text-[#545778]">Username</label>
-                  <input
+        {/* 🔍 Search & Filter Bar */}
+        <div className="mb-8 rounded-2xl border border-white/10 bg-[#0D1322] p-6 shadow-lg">
+          <form onSubmit={handleApplyFilter} className="flex flex-col gap-4 lg:flex-row lg:items-end">
+            <div className="grid flex-1 grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                  Username
+                </label>
+                <input
                   type="text"
                   value={usernameValue}
                   onChange={(event) => setUsernameValue(event.target.value)}
-                  placeholder="Search by username"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm transition-all focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                  placeholder="Search by username..."
+                  className="w-full rounded-xl border border-white/15 bg-[#090D16] px-4 py-2.5 text-xs text-white placeholder-slate-500 outline-none transition focus:border-[#D4AF37]"
                 />
-                </div>
+              </div>
 
-                <div className="flex flex-col gap-1">
-                  <label className="mb-1 block text-sm font-semibold text-[#545778]">Email</label>
-                  <input
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                  Email
+                </label>
+                <input
                   type="email"
                   value={emailValue}
                   onChange={(event) => setEmailValue(event.target.value)}
                   placeholder="name@example.com"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm transition-all focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full rounded-xl border border-white/15 bg-[#090D16] px-4 py-2.5 text-xs text-white placeholder-slate-500 outline-none transition focus:border-[#D4AF37]"
                 />
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="mb-1 block text-sm font-semibold text-[#545778]">Role</label>
-                  <select
-                    value={roleValue}
-                    onChange={(event) => setRoleValue(event.target.value)}
-                    className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm transition-all focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
-                  >
-                    <option value="">All roles</option>
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="mb-1 block text-sm font-semibold text-[#545778]">Status</label>
-                  <select
-                    value={statusValue}
-                    onChange={(event) => setStatusValue(event.target.value)}
-                    className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm transition-all focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
-                  >
-                    <option value="">All status</option>
-                    <option value="true">Active</option>
-                    <option value="false">Inactive</option>
-                  </select>
-                </div>
               </div>
 
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                  Role
+                </label>
+                <select
+                  value={roleValue}
+                  onChange={(event) => setRoleValue(event.target.value)}
+                  className="w-full rounded-xl border border-white/15 bg-[#090D16] px-4 py-2.5 text-xs text-white outline-none transition focus:border-[#D4AF37]"
+                >
+                  <option value="" className="bg-[#090D16]">All roles</option>
+                  <option value="user" className="bg-[#090D16]">User</option>
+                  <option value="admin" className="bg-[#090D16]">Admin</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                  Status
+                </label>
+                <select
+                  value={statusValue}
+                  onChange={(event) => setStatusValue(event.target.value)}
+                  className="w-full rounded-xl border border-white/15 bg-[#090D16] px-4 py-2.5 text-xs text-white outline-none transition focus:border-[#D4AF37]"
+                >
+                  <option value="" className="bg-[#090D16]">All statuses</option>
+                  <option value="true" className="bg-[#090D16]">Active</option>
+                  <option value="false" className="bg-[#090D16]">Inactive</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
               <button
                 type="submit"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-3 font-semibold text-white shadow-md transition-all hover:from-indigo-700 hover:to-indigo-800 hover:shadow-lg active:scale-95 lg:whitespace-nowrap"
+                className="rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-[#090D16] shadow-[0_4px_20px_rgba(212,175,55,0.3)] transition hover:brightness-110 active:scale-95"
               >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
                 Search
               </button>
 
               <button
                 type="button"
                 onClick={handleClearFilter}
-                className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-3 font-medium text-gray-700 shadow-sm transition-all hover:bg-slate-50 active:scale-95"
+                className="rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-slate-300 transition hover:bg-white/10 active:scale-95"
               >
                 Clear
               </button>
-            </form>
+            </div>
+          </form>
 
-            {(dataInput.username || dataInput.email || dataInput.role || dataInput.isActive) && (
-              <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-                <span className="text-gray-600">Filtering by:</span>
-                {dataInput.username && (
-                  <span className="inline-flex items-center gap-2 rounded-full bg-indigo-100 px-3 py-1 font-medium text-indigo-700">
-                    user: {dataInput.username}
-                  </span>
-                )}
-                {dataInput.email && (
-                  <span className="inline-flex items-center gap-2 rounded-full bg-indigo-100 px-3 py-1 font-medium text-indigo-700">
-                    email: {dataInput.email}
-                  </span>
-                )}
-                {dataInput.role && (
-                  <span className="inline-flex items-center gap-2 rounded-full bg-indigo-100 px-3 py-1 font-medium text-indigo-700">
-                    role: {dataInput.role}
-                  </span>
-                )}
-                {dataInput.isActive && (
-                  <span className="inline-flex items-center gap-2 rounded-full bg-indigo-100 px-3 py-1 font-medium text-indigo-700">
-                    status: {dataInput.isActive === "true" ? "active" : "inactive"}
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
+          {(dataInput.username || dataInput.email || dataInput.role || dataInput.isActive) && (
+            <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-white/10 pt-4 text-xs">
+              <span className="text-slate-400">Active filters:</span>
+              {dataInput.username && (
+                <span className="rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-1 font-semibold text-[#D4AF37]">
+                  User: {dataInput.username}
+                </span>
+              )}
+              {dataInput.email && (
+                <span className="rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-1 font-semibold text-[#D4AF37]">
+                  Email: {dataInput.email}
+                </span>
+              )}
+              {dataInput.role && (
+                <span className="rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-1 font-semibold text-[#D4AF37]">
+                  Role: {dataInput.role}
+                </span>
+              )}
+              {dataInput.isActive && (
+                <span className="rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-1 font-semibold text-[#D4AF37]">
+                  Status: {dataInput.isActive === "true" ? "Active" : "Inactive"}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
 
-
-        <div className="overflow-x-auto rounded-2xl border border-[#d7dcf2] bg-white shadow-lg">
-          <table className="min-w-full text-sm">
-            <thead className="sticky top-0 bg-gradient-to-r from-[#eef1ff] to-[#e8ecff] text-left text-[#2f3478]">
+        {/* 📊 Users Table */}
+        <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#0D1322] shadow-xl">
+          <table className="w-full text-left text-xs">
+            <thead className="border-b border-white/10 bg-white/5 uppercase tracking-wider text-slate-400">
               <tr>
-                <th className="px-6 py-4 font-bold">Username</th>
-                <th className="px-6 py-4 font-bold">Email</th>
-                <th className="px-6 py-4 font-bold">Role</th>
-                <th className="px-6 py-4 font-bold">Status</th>
-                <th className="px-6 py-4 font-bold text-center">Actions</th>
+                <th className="px-6 py-4 font-semibold">Username</th>
+                <th className="px-6 py-4 font-semibold">Email</th>
+                <th className="px-6 py-4 font-semibold">Role</th>
+                <th className="px-6 py-4 font-semibold">Status</th>
+                <th className="px-6 py-4 font-semibold text-center">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-white/5 text-slate-200">
               {users.map((item) => {
                 const isCurrentUser = item._id === currentUser?._id;
                 const actionBusy = actionLoadingUserId === item._id;
 
                 return (
-                  <tr key={item._id} className="border-t border-[#eceffd] hover:bg-[#f9faff] transition-colors text-[#3b3f67]">
-                    <td className="px-6 py-4 font-semibold text-[#171b3d]">{item.username}</td>
-                    <td className="px-6 py-4 text-[#535883]">{item.email}</td>
+                  <tr key={item._id} className="transition-colors hover:bg-white/[0.04]">
+                    <td className="px-6 py-4 font-serif text-sm font-medium text-white">{item.username}</td>
+                    <td className="px-6 py-4 text-slate-400">{item.email}</td>
                     <td className="px-6 py-4">
-                      <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-[#f0f1ff] text-[#3d3fa5]">
+                      <span className="inline-block rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-[#D4AF37]">
                         {item.role}
                       </span>
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`inline-flex items-center rounded-full px-4 py-2 text-xs font-bold ${
+                        className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider ${
                           item.isActive
-                            ? "bg-green-50 text-green-700 border border-green-200"
-                            : "bg-red-50 text-red-700 border border-red-200"
+                            ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                            : "border border-rose-500/30 bg-rose-500/10 text-rose-300"
                         }`}
                       >
-                        <span className={`inline-block w-2 h-2 rounded-full mr-2 ${
-                          item.isActive ? "bg-green-500" : "bg-red-500"
-                        }`}></span>
+                        <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${item.isActive ? "bg-emerald-400" : "bg-rose-400"}`}></span>
                         {item.isActive ? "Active" : "Inactive"}
                       </span>
                     </td>
@@ -334,7 +330,7 @@ export default function AdminUsers() {
                           type="button"
                           onClick={() => handleRoleChange(item)}
                           disabled={actionBusy || isCurrentUser}
-                          className="rounded-lg bg-gradient-to-r from-[#2f3792] to-[#3d3fa5] hover:from-[#252d7a] hover:to-[#32348c] px-4 py-2 text-xs font-bold text-white shadow-md transition hover:shadow-lg transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+                          className="rounded-lg border border-[#D4AF37]/40 bg-[#D4AF37]/10 px-3 py-1.5 text-xs font-semibold text-[#D4AF37] transition hover:bg-[#D4AF37]/20 disabled:cursor-not-allowed disabled:opacity-40"
                         >
                           {item.role === "admin" ? "Make User" : "Make Admin"}
                         </button>
@@ -343,7 +339,7 @@ export default function AdminUsers() {
                           type="button"
                           onClick={() => handleActivationToggle(item)}
                           disabled={actionBusy || isCurrentUser}
-                          className="rounded-lg bg-gradient-to-r from-[#6f52c9] to-[#7d5fb8] hover:from-[#5e456e] hover:to-[#6b4da6] px-4 py-2 text-xs font-bold text-white shadow-md transition hover:shadow-lg transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+                          className="rounded-lg border border-sky-500/40 bg-sky-500/10 px-3 py-1.5 text-xs font-semibold text-sky-300 transition hover:bg-sky-500/20 disabled:cursor-not-allowed disabled:opacity-40"
                         >
                           {item.isActive ? "Deactivate" : "Activate"}
                         </button>
@@ -352,7 +348,7 @@ export default function AdminUsers() {
                           type="button"
                           onClick={() => handleDelete(item)}
                           disabled={actionBusy || isCurrentUser}
-                          className="rounded-lg bg-gradient-to-r from-[#d94e5b] to-[#c53a56] hover:from-[#bf3f52] hover:to-[#b02c48] px-4 py-2 text-xs font-bold text-white shadow-md transition hover:shadow-lg transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+                          className="rounded-lg border border-rose-500/40 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-300 transition hover:bg-rose-500/20 disabled:cursor-not-allowed disabled:opacity-40"
                         >
                           Delete
                         </button>
@@ -364,9 +360,8 @@ export default function AdminUsers() {
 
               {users.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-[#9098ad] font-medium">
-                    <div className="text-5xl mb-3">📭</div>
-                    No users found.
+                  <td colSpan={5} className="px-6 py-12 text-center text-slate-400">
+                    No users found matching query.
                   </td>
                 </tr>
               )}
@@ -374,27 +369,26 @@ export default function AdminUsers() {
           </table>
         </div>
 
-        <div className="mt-8 flex items-center justify-between gap-3 px-6 py-6 bg-gradient-to-r from-[#f9faff] to-[#f0f1ff] rounded-xl border border-[#e8ecff]">
+        {/* 📄 Pagination */}
+        <div className="mt-8 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#0D1322] px-6 py-4">
           <button
             type="button"
             onClick={() => setPage((prev) => Math.max(1, prev - 1))}
             disabled={page <= 1}
-            className="rounded-lg border-2 border-[#cfd4ea] px-5 py-2.5 font-bold text-[#2a2f68] transition hover:bg-[#ecefff] hover:border-[#a8b0d4] transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
+            className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
           >
             ← Previous
           </button>
 
-          <div className="flex items-center gap-3">
-            <p className="text-sm font-bold text-[#3b3f67]">
-              Page <span className="bg-[#3d3fa5] text-white px-3 py-1 rounded-lg">{page}</span> of <span className="text-[#3d3fa5] font-bold">{totalPages}</span>
-            </p>
-          </div>
+          <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+            Page <span className="text-[#D4AF37] font-bold">{page}</span> of <span className="text-white">{totalPages}</span>
+          </p>
 
           <button
             type="button"
             onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
             disabled={page >= totalPages}
-            className="rounded-lg border-2 border-[#cfd4ea] px-5 py-2.5 font-bold text-[#2a2f68] transition hover:bg-[#ecefff] hover:border-[#a8b0d4] transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100"
+            className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Next →
           </button>

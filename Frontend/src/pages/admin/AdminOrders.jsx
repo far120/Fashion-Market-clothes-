@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Spinner from "../../components/ui/Spinner";
 import Error from "../../components/ui/Erorr";
 import { useToast } from "../../context/ToastContext";
-import { getOrders, updateOrder } from "../../features/restaurant/services/restaurantApi";
+import { getOrders, updateOrder } from "../../features/product/services/productApi";
 
 const statusList = ["pending", "processing", "delivered", "cancelled"];
 
@@ -58,13 +58,13 @@ export default function AdminOrdersPage() {
   function getStatusStyles(status) {
     switch (status) {
       case "processing":
-        return "border-[#fde68a] bg-[#fffbeb] text-[#b45309]";
+        return "border-sky-500/40 bg-sky-500/10 text-sky-300";
       case "delivered":
-        return "border-[#bbf7d0] bg-[#f0fdf4] text-[#15803d]";
+        return "border-emerald-500/40 bg-emerald-500/10 text-emerald-300";
       case "cancelled":
-        return "border-[#fecaca] bg-[#fff1f2] text-[#be123c]";
+        return "border-rose-500/40 bg-rose-500/10 text-rose-300";
       default:
-        return "border-[#bfdbfe] bg-[#eff6ff] text-[#1d4ed8]";
+        return "border-amber-500/40 bg-amber-500/10 text-amber-300";
     }
   }
 
@@ -73,20 +73,20 @@ export default function AdminOrdersPage() {
 
     if (customer && typeof customer === "object") {
       return {
-        name: customer.username || customer.email || "Customer",
+        name: customer.username || customer.email || "Client",
         email: customer.email || "No email",
       };
     }
 
     if (typeof customer === "string" && customer.length > 0) {
       return {
-        name: `Customer #${customer.slice(-6)}`,
+        name: `Client #${customer.slice(-6)}`,
         email: "User details not populated",
       };
     }
 
     return {
-      name: "Customer",
+      name: "Client",
       email: "User details not available",
     };
   }
@@ -94,19 +94,19 @@ export default function AdminOrdersPage() {
   function renderItems(order) {
     return (order.items || []).map((item, index) => {
       const product = item?.product;
-      const productName = product && typeof product === "object" ? product.name : product || "Item";
+      const productName = product && typeof product === "object" ? product.name : product || "Apparel Item";
       const unitPrice = Number(item?.price || product?.price || 0);
 
       return (
-        <div key={`${order._id}-${index}`} className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+        <div key={`${order._id}-${index}`} className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="font-semibold text-slate-950">{productName}</p>
-              <p className="text-xs text-slate-500">
+              <p className="font-serif text-sm font-medium text-white">{productName}</p>
+              <p className="text-xs text-slate-400">
                 Qty {item.quantity} · ${unitPrice.toFixed(2)} each
               </p>
             </div>
-            <p className="text-sm font-bold text-slate-950">${(unitPrice * item.quantity).toFixed(2)}</p>
+            <p className="font-serif text-sm font-medium text-[#D4AF37]">${(unitPrice * item.quantity).toFixed(2)}</p>
           </div>
         </div>
       );
@@ -130,74 +130,81 @@ export default function AdminOrdersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,#eef2ff_0%,#f8fafc_42%,#ffffff_100%)] px-4 py-10 sm:px-6">
-      <section className="mx-auto max-w-7xl rounded-[2rem] border border-white/70 bg-white/90 p-5 shadow-[0_24px_80px_rgba(37,99,235,0.12)] backdrop-blur sm:p-8">
-        <div className="flex flex-col gap-4 border-b border-slate-100 pb-6 lg:flex-row lg:items-end lg:justify-between">
+    <div className="min-h-screen bg-[#090D16] px-4 py-10 text-[#FAF9F6] sm:px-6 sm:py-16">
+      <section className="mx-auto max-w-7xl rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl sm:p-10">
+        <div className="flex flex-col gap-4 border-b border-white/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <span className="inline-flex rounded-full border border-sky-100 bg-sky-50 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-sky-700">
-              Commerce Operations
+            <span className="inline-flex rounded-full border border-[#D4AF37]/40 bg-[#D4AF37]/10 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-[#D4AF37]">
+              Atelier Logistics
             </span>
-            <h1 className="mt-3 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
-              Orders with user and product context.
+            <h1 className="mt-3 font-serif text-3xl font-normal tracking-wide text-white sm:text-4xl">
+              Order Fulfillment & Management
             </h1>
-            <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
-              Every order card now shows the customer, the purchased items, and the status controls in one place.
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              Manage client transactions, track purchased items, and update delivery status across all orders.
             </p>
           </div>
 
           <select
             value={statusFilter}
             onChange={(event) => setStatusFilter(event.target.value)}
-            className="rounded-2xl border border-sky-200 bg-white px-4 py-3 text-sm font-medium text-sky-900 outline-none"
+            className="rounded-xl border border-white/15 bg-[#0D1322] px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-white outline-none focus:border-[#D4AF37]"
           >
-            <option value="all">All statuses</option>
+            <option value="all" className="bg-[#090D16]">All Statuses</option>
             {statusList.map((status) => (
-              <option key={status} value={status}>
-                {status}
+              <option key={status} value={status} className="bg-[#090D16]">
+                {status.toUpperCase()}
               </option>
             ))}
           </select>
         </div>
 
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-sky-100 bg-sky-50 px-4 py-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-600">Orders on screen</p>
-            <p className="mt-2 text-3xl font-black text-sky-950">{orders.length}</p>
+        <div className="mt-6 grid gap-4 sm:grid-cols-3">
+          <div className="rounded-2xl border border-white/10 bg-[#0D1322] px-5 py-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Orders Displayed</p>
+            <p className="mt-1 font-serif text-3xl font-normal text-white">{orders.length}</p>
           </div>
-          <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">Items on screen</p>
-            <p className="mt-2 text-3xl font-black text-emerald-950">
+          <div className="rounded-2xl border border-white/10 bg-[#0D1322] px-5 py-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Items</p>
+            <p className="mt-1 font-serif text-3xl font-normal text-white">
               {orders.reduce((count, order) => count + (order.items || []).length, 0)}
             </p>
           </div>
-          <div className="rounded-2xl border border-violet-100 bg-violet-50 px-4 py-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">Total value</p>
-            <p className="mt-2 text-3xl font-black text-violet-950">
+          <div className="rounded-2xl border border-[#D4AF37]/30 bg-[#0D1322] px-5 py-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#D4AF37]">Batch Total Value</p>
+            <p className="mt-1 font-serif text-3xl font-normal text-[#D4AF37]">
               ${orders.reduce((total, order) => total + Number(order.totalAmount || 0), 0).toFixed(2)}
             </p>
           </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
           {orders.map((order) => {
             const customer = getOrderCustomer(order);
 
             return (
-              <article key={order._id} className="rounded-[1.5rem] border border-slate-200 bg-white p-4 shadow-[0_12px_26px_rgba(15,23,42,0.06)]">
-                <div className="flex flex-wrap items-start justify-between gap-3">
+              <article
+                key={order._id}
+                className="rounded-2xl border border-white/10 bg-[#0D1322] p-6 shadow-xl transition-all duration-300 hover:border-white/20"
+              >
+                <div className="flex flex-wrap items-start justify-between gap-3 border-b border-white/10 pb-4">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-sky-600">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">
                       Order #{order._id?.slice(-6)}
-                    </p>
-                    <h2 className="mt-1 text-xl font-black text-slate-950">{customer.name}</h2>
-                    <p className="mt-1 text-sm text-slate-500">{customer.email}</p>
+                    </span>
+                    <h2 className="mt-1 font-serif text-lg font-medium text-white">{customer.name}</h2>
+                    <p className="text-xs text-slate-400">{customer.email}</p>
                   </div>
 
                   <div className="text-right">
-                    <span className={`inline-flex rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] ${getStatusStyles(order.status)}`}>
+                    <span
+                      className={`inline-flex rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-wider ${getStatusStyles(
+                        order.status
+                      )}`}
+                    >
                       {order.status}
                     </span>
-                    <p className="mt-2 text-sm font-semibold text-slate-500">
+                    <p className="mt-2 text-[11px] text-slate-400">
                       {order.createdAt ? new Date(order.createdAt).toLocaleString() : "Recent order"}
                     </p>
                   </div>
@@ -205,54 +212,61 @@ export default function AdminOrdersPage() {
 
                 <div className="mt-4 space-y-2">{renderItems(order)}</div>
 
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
+                <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Total</p>
-                    <p className="text-2xl font-black text-slate-950">${Number(order.totalAmount || 0).toFixed(2)}</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Order Total</p>
+                    <p className="font-serif text-2xl font-normal text-[#D4AF37]">
+                      ${Number(order.totalAmount || 0).toFixed(2)}
+                    </p>
                   </div>
 
-                  <select
-                    value={order.status}
-                    onChange={(event) => handleStatusChange(order._id, event.target.value)}
-                    className="rounded-xl border border-sky-200 bg-sky-50 px-3 py-2 text-sm font-semibold text-sky-900 outline-none"
-                  >
-                    {statusList.map((status) => (
-                      <option key={status} value={status}>
-                        {status}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-slate-400">Status:</span>
+                    <select
+                      value={order.status}
+                      onChange={(event) => handleStatusChange(order._id, event.target.value)}
+                      className="rounded-xl border border-[#D4AF37]/40 bg-[#090D16] px-3.5 py-2 text-xs font-semibold uppercase tracking-wider text-[#D4AF37] outline-none"
+                    >
+                      {statusList.map((status) => (
+                        <option key={status} value={status} className="bg-[#090D16]">
+                          {status}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </article>
             );
           })}
 
           {orders.length === 0 && (
-            <p className="rounded-2xl border border-dashed border-sky-200 bg-sky-50 p-5 text-sm text-sky-700">
-              No orders found.
-            </p>
+            <div className="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/5 p-12 text-center">
+              <p className="text-sm text-slate-400">No orders found.</p>
+            </div>
           )}
         </div>
 
-        <div className="mt-6 flex items-center justify-between gap-3 rounded-2xl border border-sky-100 bg-sky-50 px-4 py-3">
+        {/* Pagination */}
+        <div className="mt-8 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#0D1322] px-5 py-4">
           <button
             type="button"
             disabled={currentPage <= 1 || loading}
             onClick={() => refreshOrders(currentPage - 1, statusFilter)}
-            className="rounded-xl border border-sky-200 px-3 py-2 text-xs font-semibold text-sky-900 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
           >
-            Previous
+            ← Previous
           </button>
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sky-700">
-            Page {currentPage} / {totalPages}
+          <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+            Page <span className="text-[#D4AF37] font-bold">{currentPage}</span> of{" "}
+            <span className="text-white">{totalPages}</span>
           </p>
           <button
             type="button"
             disabled={currentPage >= totalPages || loading}
             onClick={() => refreshOrders(currentPage + 1, statusFilter)}
-            className="rounded-xl border border-sky-200 px-3 py-2 text-xs font-semibold text-sky-900 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
           >
-            Next
+            Next →
           </button>
         </div>
       </section>

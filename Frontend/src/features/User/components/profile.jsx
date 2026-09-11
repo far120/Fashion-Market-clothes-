@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { FiUser, FiMail, FiShield, FiLock, FiCheckCircle, FiSave, FiRefreshCw } from "react-icons/fi";
 import { getProfile, updateProfile } from "../services/userApi.js";
 import Spinner from "../../../components/ui/Spinner.jsx";
 import Error from "../../../components/ui/Erorr.jsx";
 import { useInput } from "../../../hooks/useInput.js";
 import { useToast } from "../../../context/ToastContext";
-import { isEmail,isNotEmpty } from "../../../utils/validation";
-import Input from "../../../components/ui/Input.jsx";
-import Reset from "../../../components/ui/Reset.jsx";
-import Submit from "../../../components/ui/Submit.jsx";
+import { isEmail, isNotEmpty } from "../../../utils/validation";
 import { useAuth } from "../../auth/hooks/useAuth.js";
 
 export default function Profile() {
-  const { user, setUser } = useAuth();
+  const { user, setUser, isAdmin, isManager } = useAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -20,7 +18,6 @@ export default function Profile() {
 
   const toast = useToast();
 
-  // inputs
   const {
     value: usernameValue,
     handleInputChange: handleUsernameChange,
@@ -35,16 +32,12 @@ export default function Profile() {
     hasError: emailHasError,
   } = useInput("", (value) => isEmail(value));
 
-
-// Validation states for enabling submit button
   const isUsernameValid = isNotEmpty(usernameValue);
   const isEmailValid = isEmail(emailValue);
   const hasChanges =
     usernameValue.trim() !== initialValues.username ||
     emailValue.trim() !== initialValues.email;
   const canSubmit = isUsernameValid && isEmailValid && hasChanges;
-  
-  // Validation state for enabling reset button
   const canReset = hasChanges;
 
   function syncFormValues(profileData) {
@@ -55,8 +48,6 @@ export default function Profile() {
     setInitialValues({ username, email });
   }
 
-
-  // fetch profile
   useEffect(() => {
     async function fetchProfile() {
       setLoading(true);
@@ -85,7 +76,7 @@ export default function Profile() {
       const updatedData = await updateProfile(profileData);
       setUser(updatedData);
       syncFormValues(updatedData);
-      toast.success("Profile updated successfully ✅");
+      toast.success("Profile updated successfully ✨");
     } catch (error) {
       toast.error(error.message || "Failed to update profile ❌");
     } finally {
@@ -93,105 +84,144 @@ export default function Profile() {
     }
   }
 
-
-
   if (loading) {
     return (
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,#353d9a_0%,#2b307b_48%,#8453ad_100%)] px-4 py-10 sm:py-16">
-        <div className="mx-auto flex w-full max-w-xl flex-col items-center rounded-3xl bg-[#f7f7fb] p-8 text-center shadow-[0_24px_70px_rgba(19,23,79,0.38)] sm:p-10">
-          <div className="mb-4 rounded-full bg-[#ecefff] px-4 py-1 text-sm font-bold tracking-wide text-[#5057a1]">
-            Profile
-          </div>
-          <Spinner size="lg" />
-          <p className="mt-4 text-lg font-semibold text-[#2b3278]">
-            Loading your profile...
-          </p>
-        </div>
+      <div className="flex min-h-[70vh] flex-col items-center justify-center space-y-4">
+        <Spinner size="lg" />
+        <p className="text-sm font-serif italic text-slate-500">Loading Atelier Member Profile...</p>
       </div>
     );
   }
-  if (error) return <Error message={error.message} />;
+
+  if (error) {
+    return (
+      <div className="mx-auto mt-12 max-w-4xl px-4">
+        <Error message={error.message} />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,#353d9a_0%,#2b307b_48%,#8453ad_100%)] px-4 py-10 sm:py-16">
-      <div className="mx-auto w-full max-w-xl rounded-3xl bg-[#f7f7fb] p-6 shadow-[0_24px_70px_rgba(19,23,79,0.38)] sm:p-10">
-        <div className="mb-8 rounded-full bg-[#dbdbe3] p-1.5">
-          <div className="rounded-full bg-[linear-gradient(90deg,#ff6a8d_0%,#ff2f74_100%)] px-4 py-3 text-center text-base font-bold text-white shadow-[0_8px_24px_rgba(255,68,135,0.45)]">
-            Profile Settings
+    <div className="min-h-screen bg-stone-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 px-4 py-10 sm:px-6 lg:px-8 font-sans">
+      <div className="mx-auto max-w-3xl space-y-8">
+        
+        {/* Profile Avatar Header */}
+        <div className="rounded-3xl bg-slate-900 text-white p-8 sm:p-10 shadow-2xl border border-slate-800 flex flex-col sm:flex-row items-center gap-6">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-500 to-amber-700 text-slate-950 flex items-center justify-center font-serif font-bold text-3xl shadow-xl shrink-0">
+            {(initialValues.username || "U").charAt(0).toUpperCase()}
+          </div>
+
+          <div className="text-center sm:text-left space-y-1 flex-1">
+            <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold uppercase tracking-widest border border-amber-500/30">
+              {isAdmin ? "ATELIER ADMIN" : isManager ? "MANAGER" : "VIP ATELIER MEMBER"}
+            </div>
+            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-white">
+              {initialValues.username || "Member Profile"}
+            </h1>
+            <p className="text-xs text-slate-400 font-light">{initialValues.email}</p>
           </div>
         </div>
 
-        <h1 className="mb-3 text-center text-4xl font-extrabold tracking-wide text-[#171b3d]">
-          My Profile
-        </h1>
-        <p className="mb-8 text-center text-sm text-[#5a5f85] sm:text-base">
-          Update your account details using the same UI style as the auth screens.
-        </p>
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <Input
-            label="Username"
-            type="text"
-            value={usernameValue}
-            onChange={handleUsernameChange}
-            onBlur={handleUsernameBlur}
-            error={usernameHasError && "Invalid username"}
-            className={`w-full rounded-2xl border px-5 py-3 text-base outline-none transition ${
-              usernameHasError
-                ? "border-red-500 bg-red-50"
-                : "border-[#d9def0] bg-[#edf2fc] focus:border-[#6f7eea]"
-            }`}
-          />
-
-          <Input
-            label="Email"
-            type="email"
-            value={emailValue}
-            onChange={handleEmailChange}
-            onBlur={handleEmailBlur}
-            error={emailHasError && "Invalid email"}
-            className={`w-full rounded-2xl border px-5 py-3 text-base outline-none transition ${
-              emailHasError
-                ? "border-red-500 bg-red-50"
-                : "border-[#d9def0] bg-[#edf2fc] focus:border-[#6f7eea]"
-            }`}
-          />
-
-          <div className="grid grid-cols-1 gap-3 pt-1 sm:grid-cols-2">
-            <Reset
-              title="Reset"
-              disabled={!canReset || loading || saving}
-              onReset={() => {
-                handleUsernameChange({ target: { value: initialValues.username } });
-                handleEmailChange({ target: { value: initialValues.email } });
-              }}
-              className="rounded-2xl border border-[#cfd4ea] px-5 py-3 text-base font-semibold text-[#2a2f68] transition hover:bg-[#ecefff]"
-            />
-
-            <Submit
-              title="Save Changes"
-              loading={saving}
-              disabled={!canSubmit || loading}
-              loadingLabel="Saving changes..."
-              className="rounded-2xl bg-[linear-gradient(90deg,#3d3fa5_0%,#1d2146_100%)] px-5 py-3 text-base font-semibold text-white shadow-[0_12px_24px_rgba(31,35,82,0.35)] transition hover:brightness-110"
-            />
+        {/* Edit Form Card */}
+        <div className="rounded-3xl bg-white dark:bg-slate-900 p-6 sm:p-10 shadow-xl border border-slate-200/80 dark:border-slate-800 space-y-6">
+          <div className="border-b border-slate-100 dark:border-slate-800 pb-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+              ACCOUNT DETAILS
+            </span>
+            <h2 className="text-2xl font-serif font-bold text-slate-900 dark:text-white">Profile Settings</h2>
           </div>
-        </form>
 
-        <section className="mt-8 rounded-2xl border border-[#d9def0] bg-white p-5 shadow-[0_8px_16px_rgba(58,69,131,0.08)]">
-          <h2 className="text-xl font-bold text-[#2c3380]">Security</h2>
-          <p className="mt-2 text-sm text-[#5d6288]">
-            If you think your password is weak or exposed, update it now.
-          </p>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                Full Name / Username
+              </label>
+              <div className="relative">
+                <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-base" />
+                <input
+                  type="text"
+                  value={usernameValue}
+                  onChange={handleUsernameChange}
+                  onBlur={handleUsernameBlur}
+                  className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-stone-50 dark:bg-slate-800 text-sm text-slate-900 dark:text-white outline-none focus:border-amber-500"
+                />
+              </div>
+              {usernameHasError && (
+                <p className="text-xs text-rose-500">Username cannot be empty.</p>
+              )}
+            </div>
 
-          <Link
-            to="/reset-password"
-            className="mt-4 inline-flex rounded-2xl bg-[linear-gradient(90deg,#3d3fa5_0%,#1d2146_100%)] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(31,35,82,0.35)] transition hover:brightness-110"
-          >
-            Reset Password
-          </Link>
-        </section>
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                Email Address
+              </label>
+              <div className="relative">
+                <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-base" />
+                <input
+                  type="email"
+                  value={emailValue}
+                  onChange={handleEmailChange}
+                  onBlur={handleEmailBlur}
+                  className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-stone-50 dark:bg-slate-800 text-sm text-slate-900 dark:text-white outline-none focus:border-amber-500"
+                />
+              </div>
+              {emailHasError && (
+                <p className="text-xs text-rose-500">Please enter a valid email address.</p>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+              <button
+                type="button"
+                disabled={!canReset || saving}
+                onClick={() => {
+                  handleUsernameChange({ target: { value: initialValues.username } });
+                  handleEmailChange({ target: { value: initialValues.email } });
+                }}
+                className="py-3 px-5 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors disabled:opacity-40"
+              >
+                Discard Changes
+              </button>
+
+              <button
+                type="submit"
+                disabled={!canSubmit || saving}
+                className="py-3 px-5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-amber-500 dark:hover:bg-amber-600 dark:text-slate-950 text-xs font-bold uppercase tracking-wider shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {saving ? (
+                  <Spinner size="sm" />
+                ) : (
+                  <>
+                    <FiSave className="text-base" />
+                    <span>Save Changes</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+
+          {/* Security Box */}
+          <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="font-serif font-bold text-slate-900 dark:text-white text-base flex items-center gap-2">
+                <FiLock className="text-amber-500" />
+                Security & Password
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Keep your account protected with a strong, updated password.
+              </p>
+            </div>
+
+            <Link
+              to="/reset-password"
+              className="px-5 py-2.5 rounded-full border border-slate-200 dark:border-slate-700 bg-stone-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs font-bold uppercase tracking-wider hover:bg-slate-100 transition-colors"
+            >
+              Update Password
+            </Link>
+          </div>
+        </div>
+
       </div>
     </div>
   );
-}
+}

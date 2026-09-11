@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Spinner from "../../components/ui/Spinner";
 import Error from "../../components/ui/Erorr";
 import { useToast } from "../../context/ToastContext";
-import { createBrand , getBrands , deleteBrand } from "../../features/restaurant/services/restaurantApi";
+import { createBrand , getBrands , deleteBrand } from "../../features/product/services/productApi";
 
 export default function AdminBrandsPage() {
   const toast = useToast();
@@ -89,56 +89,93 @@ async function refreshData() {
   }
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,#ecfdf5_0%,#f0fdfa_50%,#f8fafc_100%)] px-4 py-10">
-      <section className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[0.95fr_1.2fr]">
-        <article className="rounded-3xl border border-[#86efac] bg-white p-6 shadow-[0_18px_50px_rgba(22,163,74,0.16)]">
-          <h1 className="text-3xl font-black text-[#166534]">Admin Brands</h1>
-          <p className="mt-2 text-sm text-[#15803d]">Create menu brands for product management.</p>
+    <div className="min-h-screen bg-[#090D16] px-4 py-10 text-[#FAF9F6] sm:px-6 sm:py-16">
+      <section className="mx-auto max-w-6xl">
+        <div className="mb-8 flex flex-col gap-3">
+          <span className="inline-flex w-fit rounded-full border border-[#D4AF37]/40 bg-[#D4AF37]/10 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-[#D4AF37]">
+            Brand Partnerships
+          </span>
+          <h1 className="font-serif text-3xl font-normal tracking-wide text-white sm:text-4xl">
+            Fashion Brands & Designers
+          </h1>
+          <p className="text-sm text-slate-400">
+            Register and manage featured luxury labels, design houses, and fashion ateliers.
+          </p>
+        </div>
 
-          <form onSubmit={handleSubmit} className="mt-5 space-y-3">
-            <input
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              placeholder="Brand name"
-              className="w-full rounded-xl border border-[#86efac] bg-[#f0fdf4] px-3 py-2 text-sm"
-            />
-            <button
-              type="submit"
-              className="w-full rounded-xl bg-[linear-gradient(90deg,#22c55e_0%,#15803d_100%)] px-4 py-3 text-sm font-bold text-white"
-            >
-              Create Brand  
-            </button>
-          </form>
-        </article>
+        <div className="grid gap-8 lg:grid-cols-[0.95fr_1.2fr]">
+          {/* Create Brand Form */}
+          <article className="h-fit rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl">
+            <h2 className="font-serif text-xl font-medium text-white">Add New Brand</h2>
+            <p className="mt-1 text-xs text-slate-400">
+              Enter the official brand or designer label name.
+            </p>
 
-        <article className="rounded-3xl border border-[#67e8f9] bg-white p-6 shadow-[0_18px_50px_rgba(14,116,144,0.14)]">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-2xl font-black text-[#0f766e]">Current Brands</h2>
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search brand by name"
-              className="w-full max-w-xs rounded-xl border border-[#67e8f9] bg-[#ecfeff] px-3 py-2 text-sm"
-            />
-          </div>
-          <div className="mt-5 space-y-3">
-            {filteredBrands.map((brand) => (
-              <div key={brand._id} className="rounded-xl border border-[#a5f3fc] bg-[#ecfeff] p-4">
-                <p className="font-bold text-[#155e75]">{brand.name}</p>
-                <button
-                  onClick={() => handleDelete(brand._id)}
-                  className="mt-2 rounded-xl bg-red-500 px-3 py-1 text-sm font-bold text-white" >Delete </button>
+            <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                  Brand Name
+                </label>
+                <input
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  placeholder="e.g. Maison Atelier"
+                  className="w-full rounded-xl border border-white/15 bg-[#0D1322] px-4 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]"
+                />
               </div>
-            ))}
 
-            {filteredBrands.length === 0 && (
-              <p className="rounded-xl border border-dashed border-[#67e8f9] bg-[#ecfeff] p-4 text-sm text-[#0f766e]">
-                No brands found.
-              </p>
-            )}
-          </div>
-        </article>
+              <button
+                type="submit"
+                className="w-full rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] px-4 py-3 text-xs font-semibold uppercase tracking-widest text-[#090D16] shadow-[0_4px_20px_rgba(212,175,55,0.3)] transition hover:brightness-110 active:scale-95"
+              >
+                Create Brand
+              </button>
+            </form>
+          </article>
+
+          {/* Current Brands List */}
+          <article className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl">
+            <div className="flex flex-col gap-3 border-b border-white/10 pb-5 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="font-serif text-xl font-medium text-white">Registered Brands</h2>
+                <p className="text-xs text-slate-400">{filteredBrands.length} brands in catalog</p>
+              </div>
+
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder="Search brands..."
+                className="rounded-xl border border-white/15 bg-[#0D1322] px-3.5 py-2 text-xs text-white placeholder-slate-500 outline-none focus:border-[#D4AF37]"
+              />
+            </div>
+
+            <div className="mt-6 space-y-3">
+              {filteredBrands.map((brand) => (
+                <div
+                  key={brand._id}
+                  className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0D1322] p-4 transition-all hover:border-[#D4AF37]/40"
+                >
+                  <span className="font-serif text-base font-medium text-white">
+                    {brand.name}
+                  </span>
+                  <button
+                    onClick={() => handleDelete(brand._id)}
+                    className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-300 transition hover:bg-rose-500/20 active:scale-95"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
+
+              {filteredBrands.length === 0 && (
+                <div className="rounded-2xl border border-dashed border-white/15 bg-white/5 p-8 text-center">
+                  <p className="text-sm text-slate-400">No brands found.</p>
+                </div>
+              )}
+            </div>
+          </article>
+        </div>
       </section>
     </div>
   );

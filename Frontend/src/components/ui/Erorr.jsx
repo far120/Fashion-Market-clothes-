@@ -1,25 +1,14 @@
-// src/components/ui/Error.jsx
+import { FiAlertCircle } from "react-icons/fi";
+
 export default function Error({ message }) {
-  if (!message) return null; // لو مفيش رسالة، متظهرش حاجة
+  if (!message) return null;
+
+  const displayMsg = typeof message === "object" ? message.message || JSON.stringify(message) : message;
 
   return (
-    <div className="w-full p-4 bg-red-100 border border-red-400 text-red-800 rounded-md flex items-center">
-      <svg
-        className="w-5 h-5 mr-2 shrink-0"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-      >
-        <path
-          fillRule="evenodd"
-          d="M18 10c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8zm-9-4a1 1 0 012 0v4a1 1 0 01-2 0V6zm1 8a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"
-          clipRule="evenodd"
-        />
-      </svg>
-      <span>{message}</span>
+    <div className="w-full p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 dark:bg-rose-950/40 dark:border-rose-800/60 dark:text-rose-200 flex items-center gap-3 shadow-xs animate-shake">
+      <FiAlertCircle className="w-5 h-5 shrink-0 text-rose-600 dark:text-rose-400" />
+      <span className="text-sm font-medium">{displayMsg}</span>
     </div>
   );
-}
-
-// example usage
-// <Error message="Something went wrong!" />
-// <Error message={error.message} />
+}

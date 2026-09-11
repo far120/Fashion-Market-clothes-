@@ -1,4 +1,4 @@
-const CART_KEY = "restaurant_cart";
+const CART_KEY = "fashion_market_cart";
 
 function toPositiveNumber(value) {
   const numericValue = Number(value);
@@ -7,7 +7,7 @@ function toPositiveNumber(value) {
 
 export function readCart() {
   try {
-    const raw = localStorage.getItem(CART_KEY);
+    const raw = localStorage.getItem(CART_KEY) || localStorage.getItem("restaurant_cart");
     const data = raw ? JSON.parse(raw) : [];
     return Array.isArray(data) ? data : [];
   } catch {
@@ -17,7 +17,11 @@ export function readCart() {
 
 export function writeCart(items) {
   localStorage.setItem(CART_KEY, JSON.stringify(items));
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event("cart-updated"));
+  }
 }
+
 
 export function getCartItemQuantity(cartItems, productId) {
   return cartItems.find((item) => item.productId === productId)?.quantity || 0;

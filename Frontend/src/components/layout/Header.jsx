@@ -1,184 +1,274 @@
-import { useState } from "react";
-import { FiLogOut, FiMenu, FiX } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { FiLogOut, FiMenu, FiX, FiShoppingBag, FiUser, FiSliders, FiHome, FiGrid, FiPackage, FiStar } from "react-icons/fi";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../features/auth/hooks/useAuth";
+import { getCartTotals } from "../../utils/cart";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const { isAuthenticated, isAdmin, isManager, user, logout } = useAuth();
+  const location = useLocation();
 
-  const userName = user?.username || "User";
-  const baseLinkClass = "transition hover:text-[#ffc3d4]";
+  const userName = user?.username || "Guest";
+
+  useEffect(() => {
+    const updateCount = () => {
+      const totals = getCartTotals();
+      setCartCount(totals.itemsCount);
+    };
+
+    updateCount();
+    window.addEventListener("cart-updated", updateCount);
+    return () => window.removeEventListener("cart-updated", updateCount);
+  }, []);
 
   function handleLogout() {
     logout();
     setIsMobileMenuOpen(false);
   }
 
+  const isActive = (path) => location.pathname === path;
+
+  const navLinkStyle = (path) =>
+    `relative px-3.5 py-2 text-sm font-medium transition-all duration-200 rounded-full flex items-center gap-1.5 ${
+      isActive(path)
+        ? "text-slate-900 bg-slate-100 dark:text-white dark:bg-slate-800 font-semibold shadow-xs"
+        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800/60"
+    }`;
+
   return (
-    <header className="bg-[linear-gradient(90deg,#2f3792_0%,#1f2350_100%)] text-white shadow-[0_10px_28px_rgba(17,21,58,0.45)]">
+    <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-white/90 dark:bg-slate-950/90 border-b border-slate-200/80 dark:border-slate-800/80 transition-colors shadow-xs">
+      {/* Top Banner */}
+      <div className="bg-gradient-to-r from-slate-900 via-amber-950 to-slate-900 text-amber-200 text-xs py-1.5 px-4 text-center tracking-widest font-medium uppercase flex items-center justify-center gap-2">
+        <span>✨ FREE EXPRESS SHIPPING ON ORDERS OVER $150</span>
+        <span className="hidden sm:inline opacity-40">|</span>
+        <span className="hidden sm:inline text-amber-300">NEW AUTUMN / WINTER COLLECTION ARRIVED</span>
+      </div>
+
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center">
-                <Link to="/">
-  <svg viewBox="0 0 680 420" width="110" height="68" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="340,38 435,90 435,194 340,246 245,194 245,90" fill="#ffffff" opacity="0.06"/>
-    <polygon points="340,50 423,98 423,186 340,234 257,186 257,98" fill="none" stroke="#ffffff" strokeWidth="2.5" opacity="0.35"/>
-    <text x="340" y="168" textAnchor="middle" fontFamily="monospace" fontSize="76" fontWeight="700" fill="#ffffff" letterSpacing="-2" opacity="0.95">MF</text>
-    <circle cx="340" cy="206" r="4" fill="#EF9F27"/>
-    <text x="340" y="278" textAnchor="middle" fontFamily="'Segoe UI', sans-serif" fontSize="21" fontWeight="500" fill="#ffffff" letterSpacing="6">MOSTAFA ELFAR</text>
-    <line x1="230" y1="293" x2="450" y2="293" stroke="#EF9F27" strokeWidth="1.5"/>
-    <text x="340" y="318" textAnchor="middle" fontFamily="'Segoe UI', sans-serif" fontSize="12.5" fontWeight="400" fill="#a0a8e8" letterSpacing="3">MERN STACK DEVELOPER</text>
-  </svg>
-</Link>
-          </div>
-          <ul className="hidden md:flex items-center space-x-8 text-sm font-semibold">
+        <div className="flex justify-between items-center h-20">
+          
+          {/* Brand Logo */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-slate-900 via-amber-950 to-slate-800 flex items-center justify-center text-amber-400 font-serif font-bold text-xl shadow-md group-hover:scale-105 transition-transform duration-300 border border-amber-500/30">
+              FM
+            </div>
+            <div className="flex flex-col">
+              <span className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors">
+                FASHION<span className="text-amber-600 font-normal">MARKET</span>
+              </span>
+              <span className="text-[10px] tracking-[0.25em] uppercase text-slate-400 font-semibold -mt-1">
+                LUXURY ATELIER
+              </span>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation Links */}
+          <ul className="hidden md:flex items-center space-x-1 lg:space-x-2 font-sans">
             <li>
-              <Link to="/menu" className={baseLinkClass}>Menu</Link>
+              <Link to="/" className={navLinkStyle("/")}>
+                <FiHome className="text-base" />
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/menu" className={navLinkStyle("/menu")}>
+                <FiGrid className="text-base" />
+                Shop Catalog
+              </Link>
+            </li>
+            <li>
+              <Link to="/reviews" className={navLinkStyle("/reviews")}>
+                <FiStar className="text-base" />
+                Reviews
+              </Link>
             </li>
 
             {isAuthenticated && (
               <li>
-                <Link to="/orders" className={baseLinkClass}>Orders</Link>
+                <Link to="/orders" className={navLinkStyle("/orders")}>
+                  <FiPackage className="text-base" />
+                  My Orders
+                </Link>
               </li>
             )}
-
-            {!isAuthenticated && (
-              <>
-                <li>
-                  <Link to="/login" className={baseLinkClass}>Login</Link>
-                </li>
-                <li>
-                  <Link to="/register" className={baseLinkClass}>Register</Link>
-                </li>
-              </>
-            )}
-
-            {isAuthenticated && (
-              <>
-                <li>
-                  <Link to="/profile" className={baseLinkClass}>Profile</Link>
-                </li>
-                {(isAdmin || isManager) && ( 
-                    <li>
-                      <Link to="/admin/dashboard" className={baseLinkClass}>Admin Hub</Link>
-                    </li>
-                )}
-                <li className="rounded-full bg-[#2a2f68] px-3 py-1 text-xs tracking-wide text-[#d3d8ff]">
-                  {isAdmin ? "ADMIN" : isManager ? "Manager" : "User"}
-                </li>
-                <li className="text-[#f9d4de]">{userName}</li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    className="inline-flex items-center gap-2 rounded-lg border border-[#7078cb] px-3 py-1.5 text-xs uppercase tracking-wide text-white transition hover:bg-[#2a2f68]"
-                  >
-                    <FiLogOut />
-                    Logout
-                  </button>
-                </li>
-              </>
-            )}
           </ul>
-          <button
-            type="button"
-            className="md:hidden rounded-lg bg-[#2a2f68] p-2 hover:bg-[#1f2350]"
-            aria-label="Open menu"
-            aria-expanded={isMobileMenuOpen}
-            aria-controls="mobile-nav"
-            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-          >
-            {isMobileMenuOpen ? <FiX className="text-xl" /> : <FiMenu className="text-xl" />}
-          </button>
-        </div>
 
-        {isMobileMenuOpen && (
-          <ul id="mobile-nav" className="pb-4 md:hidden space-y-2 text-sm font-semibold">
-            <li>
-              <Link
-                to="/menu"
-                className="block rounded-lg bg-[#2a2f68] px-4 py-2 transition hover:bg-[#1f2350]"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Menu
-              </Link>
-            </li>
+          {/* Right Action Icons & User Control */}
+          <div className="hidden md:flex items-center space-x-3">
+            {/* Cart Icon Button */}
+            <Link
+              to="/menu"
+              className="relative p-2.5 rounded-full text-slate-700 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+              title="Shopping Cart"
+            >
+              <FiShoppingBag className="text-xl" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-rose-600 text-[11px] font-bold text-white shadow-md animate-pulse">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
 
-            {!isAuthenticated && (
-              <>
-                <li>
-                  <Link
-                    to="/login"
-                    className="block rounded-lg bg-[#2a2f68] px-4 py-2 transition hover:bg-[#1f2350]"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Login
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/register"
-                    className="block rounded-lg bg-[#2a2f68] px-4 py-2 transition hover:bg-[#1f2350]"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Register
-                  </Link>
-                </li>
-              </>
-            )}
+            <div className="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1" />
 
-            {isAuthenticated && (
-              <>
-                <li className="rounded-lg bg-[#2a2f68] px-4 py-2 text-[#f9d4de]">
-                  Signed in as {userName}
-                </li>
-                <li>
-                  <Link
-                    to="/orders"
-                    className="block rounded-lg bg-[#2a2f68] px-4 py-2 transition hover:bg-[#1f2350]"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Orders
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/profile"
-                    className="block rounded-lg bg-[#2a2f68] px-4 py-2 transition hover:bg-[#1f2350]"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Profile
-                  </Link>
-                </li>
-                <li>
-                </li>
+            {!isAuthenticated ? (
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/login"
+                  className="px-4 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-5 py-2.5 text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800 dark:bg-amber-500 dark:hover:bg-amber-600 dark:text-slate-950 rounded-full shadow-sm hover:shadow-md transition-all transform hover:-translate-y-0.5"
+                >
+                  Join Us
+                </Link>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/profile"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                >
+                  <div className="w-7 h-7 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-xs uppercase">
+                    {userName.charAt(0)}
+                  </div>
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-200 max-w-[100px] truncate">
+                    {userName}
+                  </span>
+                </Link>
 
                 {(isAdmin || isManager) && (
-                    <li>
-                      <Link
-                        to="/admin/dashboard"
-                        className="block rounded-lg bg-[#2a2f68] px-4 py-2 transition hover:bg-[#1f2350]"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        Admin Hub
-                      </Link>
-                    </li>
-                )}
-                <li>
-                  <button
-                    type="button"
-                    className="block w-full rounded-lg bg-[#2a2f68] px-4 py-2 text-left transition hover:bg-[#1f2350]"
-                    onClick={handleLogout}
+                  <Link
+                    to="/admin/dashboard"
+                    className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-600 to-amber-700 text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm hover:shadow-md transition-all"
                   >
-                    Logout
-                  </button>
-                </li>
-              </>
+                    <FiSliders className="text-xs" />
+                    Admin
+                  </Link>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="p-2.5 rounded-full text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
+                  title="Logout"
+                >
+                  <FiLogOut className="text-lg" />
+                </button>
+              </div>
             )}
-          </ul>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex items-center gap-2 md:hidden">
+            <Link
+              to="/menu"
+              className="relative p-2 rounded-full text-slate-700 dark:text-slate-200"
+            >
+              <FiShoppingBag className="text-xl" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-600 text-[10px] font-bold text-white">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+            <button
+              type="button"
+              className="p-2 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 transition-colors"
+              aria-label="Toggle navigation menu"
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            >
+              {isMobileMenuOpen ? <FiX className="text-2xl" /> : <FiMenu className="text-2xl" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation Drawer */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden pb-6 pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2 animate-fade-in">
+            <Link
+              to="/"
+              className="flex items-center gap-3 px-4 py-3 rounded-2xl font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <FiHome /> Home
+            </Link>
+            <Link
+              to="/menu"
+              className="flex items-center gap-3 px-4 py-3 rounded-2xl font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <FiGrid /> Shop Catalog
+            </Link>
+            <Link
+              to="/reviews"
+              className="flex items-center gap-3 px-4 py-3 rounded-2xl font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <FiStar /> Customer Reviews
+            </Link>
+
+            {isAuthenticated ? (
+              <>
+                <Link
+                  to="/orders"
+                  className="flex items-center gap-3 px-4 py-3 rounded-2xl font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <FiPackage /> My Orders
+                </Link>
+                <Link
+                  to="/profile"
+                  className="flex items-center gap-3 px-4 py-3 rounded-2xl font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <FiUser /> Profile ({userName})
+                </Link>
+
+                {(isAdmin || isManager) && (
+                  <Link
+                    to="/admin/dashboard"
+                    className="flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <FiSliders /> Admin Panel
+                  </Link>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-medium text-rose-600 hover:bg-rose-50 dark:hover:bg-slate-800 text-left"
+                >
+                  <FiLogOut /> Logout
+                </button>
+              </>
+            ) : (
+              <div className="pt-2 grid grid-cols-2 gap-2">
+                <Link
+                  to="/login"
+                  className="text-center py-3 rounded-2xl font-semibold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="text-center py-3 rounded-2xl font-semibold bg-slate-900 text-white dark:bg-amber-500 dark:text-slate-950"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Register
+                </Link>
+              </div>
+            )}
+          </div>
         )}
       </nav>
     </header>
   );
-}
+}
