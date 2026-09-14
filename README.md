@@ -165,8 +165,4 @@ Fashion Market/
 | `/api/orders` | Checkout, order creation & status updates | Yes | User / Admin |
 | `/api/reviews` | Product ratings and reviews | Partial | Public / User |
 
----
 
-## 📄 License
-
-This project is licensed under the [ISC License](file:///d:/2026/Projects/Fashion%20Market%28clothes%29/Backend/package.json).
