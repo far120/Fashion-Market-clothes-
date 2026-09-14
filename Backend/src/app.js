@@ -69,8 +69,12 @@ app.use((req,res,next)=>{
 app.use(require('./middlewares/error-handler.middleware'));
 
 
-// listen to server
+// listen to server if run directly
 const port = process.env.PORT || 3002;
-app.listen(port, () => {
+if (require.main === module) {
+  app.listen(port, () => {
     logger.info(`Server is running on http://localhost:${port}`);
-});
+  });
+}
+
+module.exports = app;
